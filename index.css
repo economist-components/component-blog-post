@@ -75,12 +75,14 @@
   font-size: var(--text-size-step--3);
   line-height: var(--text-line-height-sans-light-on-step--2);
   letter-spacing: var(--text-letter-spacing-sans-light-on-step--2);
-  font-family: 'Halifax Light';
+  font-weight: var(--blog-post-font-weight-datetime, lighter);
   color: var(--blog-post-color-datetime, var(--color-moscow));
 }
 
 .blog-post__byline-container {
-  font-family: 'FF Milo Serif Pro Med Italic';
+  font-family: var(--blog-post-font-family-byline, var(--fontfamily-serif));
+  font-weight: var(--blog-post-font-weight-byline, normal);
+  font-style: var(--blog-post-font-style-byline, italic);
   margin: 0;
 }
 
@@ -135,7 +137,10 @@
 .blog-post__text blockquote {
   margin: var(--grid-spacing-sheep) var(--grid-spacing-fox);
   color: var(--blog-post-color-blockquote, var(--color-moscow));
-  font-family: 'FF Milo Serif Pro Med Italic';
+  font-family: var(--blog-post-font-family-blockquote, var(--fontfamily-serif));
+  font-weight: var(--blog-post-font-weight-blockquote, normal);
+  font-style: var(--blog-post-font-style-blockquote, italic);
+  font-weight: bold;
 }
 
 .blog-post__text blockquote > :first-child {
@@ -149,8 +154,9 @@
   font-size: var(--text-size-step-3);
   line-height: var(--text-line-height-serif-on-step-3);
   text-indent: 0;
-  font-family: 'FF Milo Serif Pro';
-  font-weight: bold;
+  font-family: var(--blog-post-font-family-blockquote-quote-signs, var(--fontfamily-serif));
+  font-weight: var(--blog-post-font-weight-blockquote-quote-signs, bold);
+  font-style: var(--blog-post-font-style-blockquote-quote-signs, normal);
   position: absolute;
   display:inline;
 }
