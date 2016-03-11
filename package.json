@@ -39,6 +39,7 @@
     "build:css": "cp $npm_package_directories_src/*.css $npm_package_directories_lib",
     "build:js": "babel $npm_package_directories_src -d $npm_package_directories_lib",
     "ci": "sh ./build.sh",
+    "coverage": "babel-node -r node_modules/isparta/bin/isparta cover _mocha -- coverage.js",
     "predoc": "mkdir -p $npm_package_directories_site",
     "doc": "npm-run-all --parallel doc:*",
     "doc:assets": "npm-assets $npm_package_directories_site",
@@ -70,7 +71,7 @@
   "config": {
     "doc": {
       "js": {
-        "options": "-r react -r react-dom -r ./src/example.js:example"
+        "options": "-d -r react -r react-dom -r ./src/example.js:example"
       },
       "html": {
         "files": "@economist/doc-pack/templates/index.hbs @economist/doc-pack/templates/standalone.hbs"
@@ -86,14 +87,13 @@
   },
   "browserify": {
     "transform": [
-      "babelify"
+      ["babelify", { "sourceMaps": false }]
     ]
   },
   "babel": {
     "compact": false,
     "ignore": "node_modules",
     "loose": "all",
-    "sourceMaps": "inline",
     "stage": 2
   },
   "eslintConfig": {
@@ -136,6 +136,8 @@
     "ghooks": "^1.0.3",
     "git-directory-deploy": "^1.5.0",
     "hbs-cli": "^1.0.0",
+    "isparta": "3.5.3",
+    "jsdomify": "^2.0.1",
     "karma": "^0.13.21",
     "karma-mocha": "^0.2.2",
     "karma-mocha-reporter": "^2.0.0",
@@ -158,8 +160,5 @@
     "stylelint-config-strict": "^3.0.1",
     "validate-commit-msg": "^2.3.1",
     "watchify": "^3.7.0"
-  },
-  "peerDependencies": {
-    "react": "^0.14.0"
   }
 }
