@@ -130,7 +130,7 @@
     "chai-spies": "^0.7.1",
     "enzyme": "^2.2.0",
     "eslint": "^2.6.0",
-    "eslint-config-strict": "^8.5.0",
+    "eslint-config-strict": "^9.0.0",
     "eslint-config-strict-react": "^8.0.1",
     "eslint-plugin-filenames": "^0.2.0",
     "eslint-plugin-react": "^5.1.1",
