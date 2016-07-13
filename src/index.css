@@ -214,7 +214,6 @@
     float: left;
   }
   .blog-post-article-image.image-type__slim {
-    float: left;
     max-width: var(--slim-max-width);
     margin-right: var(--slim-margin);
   }
