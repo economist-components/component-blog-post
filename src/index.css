@@ -1,3 +1,6 @@
+/* stylelint-disable selector-no-type */
+/* unknown class */
+
 @import '@economist/component-typography';
 @import '@economist/component-palette';
 @import '@economist/component-grid';
@@ -5,6 +8,11 @@
 @import 'settings.css';
 @import 'sharebar.css';
 @import 'comments.css';
+
+:root {
+  --slim-max-width: 290px;
+  --slim-margin: 30px;
+}
 
 .blog-post {
   font-family: var(--fontfamily-sans);
@@ -100,15 +108,10 @@
   line-height: var(--text-line-height-sans-on-step--2);
 }
 
-/* stylelint-disable selector-no-type */
-/* unknown class */
-
 .blog-post__section-link, .blog-post__text a {
   transition: color 101ms ease;
   transition-property: color, border-bottom-color;
 }
-
-/* stylelint-enable selector-no-type */
 
 .blog-post__section-link {
   color: var(--blog-post-color-section-link, inherit);
@@ -122,9 +125,6 @@
 .blog-post__section-link:visited {
   color: inherit;
 }
-
-/* stylelint-disable selector-no-type */
-/* unknown class */
 
 .blog-post__text a {
   color: var(--blog-post-color-link-underline, inherit);
@@ -180,8 +180,6 @@
   margin-top: 0.2em;
 }
 
-/* stylelint-enable selector-no-type */
-
 .blog-post__inner {
   position: relative;
 }
@@ -193,6 +191,33 @@
   justify-content: space-between;
   border-top: 1px solid var(--color-berlin);
   border-bottom: 1px solid var(--color-berlin);
+}
+
+
+.blog-post__inline-image--generic {
+  text-align: center;
+}
+
+.blog-post-article-image {
+  width: 100%;
+  height: auto;
+}
+
+.blog-post-article-image.image-type__slim {
+  width: auto;
+  max-width: 100%;
+}
+
+
+@media (--fe-blogs-small-layout) {
+  .blog-post__inline-image--generic {
+    float: left;
+  }
+  .blog-post-article-image.image-type__slim {
+    float: left;
+    max-width: var(--slim-max-width);
+    margin-right: var(--slim-margin);
+  }
 }
 
 @media (--navigation-big-desktop-up) {
@@ -207,3 +232,4 @@
     border-bottom: 1px solid var(--color-berlin);
   }
 }
+

@@ -1,11 +1,16 @@
+/* eslint-disable */
 import 'babel-polyfill';
 import BlogPost from '../src';
+import ArticleImage from '../lib/parts/article-image';
 import MobileDetect from 'mobile-detect';
 import React from 'react';
 import chai from 'chai';
+import sinon from 'sinon';
+import sinonChai from 'sinon-chai';
 import chaiEnzyme from 'chai-enzyme';
 import { mount } from 'enzyme';
 chai.use(chaiEnzyme()).should();
+chai.use(sinonChai);
 
 function mountComponent(requiredProps) {
   return function (additionalProps) {
@@ -255,4 +260,108 @@ describe('BlogPost', () => {
       });
     });
   });
+
+  describe('images', () => {
+    /* eslint-disable max-len */
+    const wideExplicit = `
+      <p class="xhead">Wide image with explicit measures</p>
+      <p>The following image is a "wide" one. the HTML image tag comes with <em>width</em> and <em>height</em> already specified, so we just take them for true and we determine if the image is wide or slim based on those values</p>
+      <figure>
+        <img id="wide-explicit" src="http://cdn.static-economist.com/sites/default/files/images/2016/05/articles/body/20160528_IRC476.png" alt="" title="" height="732" width="1190"/>
+      </figure>
+    `;
+    const textIntro = `
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+    `;
+    const textOuttro = `
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+    `;
+    const slimExplicit = `
+      <p class="xhead">Slim image with explicit measures</p>
+      <p>The following image is a 'slim' one and its dimensions are provided by the HTML content, so we just use them to determine its aspect and style it accordingly. we have also some additional text to flow around it:</p>
+      <figure>
+        <img id="slim-explicit" src="http://cdn.static-economist.com/sites/default/files/images/2016/07/articles/body/20160709_brp006.jpg" alt="" title="" height="317" width="290"/>
+      </figure>
+    `;
+    /* eslint-enable max-len */
+    // subject under test
+    let subject = null;
+
+    it('tags wide images according to their attributed measures', () => {
+      subject = mountComponentWithProps({
+        text: textIntro + wideExplicit + textOuttro
+      });
+      // check that the image is marked as 'image-type__normal'
+      subject.find('#wide-explicit.image-type__normal').should.not.be.null;
+    });
+
+    it('tags slim images according to their attributed measures', () => {
+      subject = mountComponentWithProps({
+        text: textIntro + slimExplicit + textOuttro
+      });
+      // check that the image is marked as 'image-type__slim'
+      subject.find('#slim-explicit.image-type__slim').should.not.be.null;
+    });
+
+    it('tags wide images with no measures according to their aspect', () => {
+      subject = new ArticleImage({
+        src:"http://cdn.static-economist.com/sites/default/files/images/2016/07/articles/body/20160709_brp006.jpg",
+      });
+      subject.refs = {
+        image: {
+          naturalWidth: 595,
+          naturalHeight: 375
+        }
+      };
+      subject.handleImageLoaded();
+
+      // check that the image is marked as 'normal'
+      subject.state.aspectType.should.equal('normal');
+    });
+
+    it('tags slim images with no measures according to their aspect', () => {
+      subject = new ArticleImage({
+        src:"http://cdn.static-economist.com/sites/default/files/images/2016/07/articles/body/20160709_brp006.jpg",
+      });
+      subject.setState = sinon.spy();
+      subject.refs = {
+        image: {
+          naturalWidth: 290,
+          naturalHeight: 515
+        }
+      };
+      subject.handleImageLoaded();
+
+      // check that the image is marked as 'slim'
+      subject.setState.should.have.been.calledWith({ aspectType: 'slim', aspectRecomputed: true });
+    });
+
+    it('uses the measure in the image if present', () => {
+      // using an image with explicit measures, the applyImageAspect function
+      // should be called only once (when the component mount and before the
+      // first state change)
+      subject = new ArticleImage({
+        src:"http://cdn.static-economist.com/sites/default/files/images/2016/07/articles/body/20160709_brp006.jpg",
+        alt:"",
+        height:"317",
+        width:"290"
+      });
+      sinon.spy(ArticleImage.prototype, 'applyImageAspect');
+      subject.setState = sinon.spy();
+
+      // when the component mount, it will call applyImageAspect
+      subject.componentWillMount();
+      
+      // check that the image is marked as computed after mount
+      subject.applyImageAspect.should.have.been.called;
+      subject.setState.should.have.been.calledWith({ aspectRecomputed: true });
+
+      // if handleImageLoaded is called, no additional calls to applyImageAspect are made
+      subject.applyImageAspect.reset();
+      subject.state.aspectRecomputed = true;
+      subject.handleImageLoaded();
+      subject.applyImageAspect.should.not.have.been.called;
+    });
+  });
 });
+
