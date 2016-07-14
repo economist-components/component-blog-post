@@ -46,7 +46,7 @@ class ArticleImage extends React.Component {
 
   render() {
     const { className = '' } = this.props;
-    const imageClass = `${ className } blog-post-article-image image-type__${ this.state.aspectType }`;
+    const imageClass = `${ className } blog-post-article-image blog-post-article-image__${ this.state.aspectType }`;
     return (
       <img
         ref="image"

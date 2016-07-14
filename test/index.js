@@ -262,45 +262,31 @@ describe('BlogPost', () => {
   });
 
   describe('images', () => {
-    /* eslint-disable max-len */
-    const wideExplicit = `
-      <p class="xhead">Wide image with explicit measures</p>
-      <p>The following image is a "wide" one. the HTML image tag comes with <em>width</em> and <em>height</em> already specified, so we just take them for true and we determine if the image is wide or slim based on those values</p>
-      <figure>
-        <img id="wide-explicit" src="http://cdn.static-economist.com/sites/default/files/images/2016/05/articles/body/20160528_IRC476.png" alt="" title="" height="732" width="1190"/>
-      </figure>
-    `;
-    const textIntro = `
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-    `;
-    const textOuttro = `
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-    `;
-    const slimExplicit = `
-      <p class="xhead">Slim image with explicit measures</p>
-      <p>The following image is a 'slim' one and its dimensions are provided by the HTML content, so we just use them to determine its aspect and style it accordingly. we have also some additional text to flow around it:</p>
-      <figure>
-        <img id="slim-explicit" src="http://cdn.static-economist.com/sites/default/files/images/2016/07/articles/body/20160709_brp006.jpg" alt="" title="" height="317" width="290"/>
-      </figure>
-    `;
-    /* eslint-enable max-len */
     // subject under test
     let subject = null;
 
     it('tags wide images according to their attributed measures', () => {
-      subject = mountComponentWithProps({
-        text: textIntro + wideExplicit + textOuttro
+      subject = new ArticleImage({
+        src:"http://cdn.static-economist.com/sites/default/files/images/2016/07/articles/body/20160709_brp006.jpg",
+        width: "1090",
+        height: "450"
       });
-      // check that the image is marked as 'image-type__normal'
-      subject.find('#wide-explicit.image-type__normal').should.not.be.null;
+      subject.setState = sinon.spy();
+      subject.componentWillMount();
+      // check that the image is marked as 'normal'
+      subject.setState.should.have.been.calledWith({ aspectRecomputed: true });
     });
 
     it('tags slim images according to their attributed measures', () => {
-      subject = mountComponentWithProps({
-        text: textIntro + slimExplicit + textOuttro
+      subject = new ArticleImage({
+        src:"http://cdn.static-economist.com/sites/default/files/images/2016/07/articles/body/20160709_brp006.jpg",
+        width: "290",
+        height: "450"
       });
-      // check that the image is marked as 'image-type__slim'
-      subject.find('#slim-explicit.image-type__slim').should.not.be.null;
+      subject.setState = sinon.spy();
+      subject.componentWillMount();
+      // check that the image is marked as 'slim'
+      subject.setState.should.have.been.calledWith({ aspectType: 'slim', aspectRecomputed: true });
     });
 
     it('tags wide images with no measures according to their aspect', () => {

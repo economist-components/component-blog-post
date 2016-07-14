@@ -193,17 +193,12 @@
   border-bottom: 1px solid var(--color-berlin);
 }
 
-
-.blog-post__inline-image--generic {
-  text-align: center;
-}
-
 .blog-post-article-image {
   width: 100%;
   height: auto;
 }
 
-.blog-post-article-image.image-type__slim {
+.blog-post-article-image__slim {
   width: auto;
   max-width: 100%;
 }
@@ -213,7 +208,7 @@
   .blog-post__inline-image--generic {
     float: left;
   }
-  .blog-post-article-image.image-type__slim {
+  .blog-post-article-image__slim {
     max-width: var(--slim-max-width);
     margin-right: var(--slim-margin);
   }
