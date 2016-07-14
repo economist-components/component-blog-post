@@ -11,7 +11,6 @@
 
 .blog-post__toggle-share {
   display: flex;
-  height: 38px;
   align-items: center;
 }
 
@@ -29,6 +28,9 @@
   display: flex;
   height: 100%;
   align-items: center;
+  color: var(--color-kiev);
+  font-size: var(--text-size-step--4);
+  text-decoration: none;
 }
 
 .blog-post__toggle-share.balloon--not-visible .blog-post__sharebar-icon-close,
@@ -57,7 +59,12 @@
 }
 
 .blog-post__sharebar .Icon {
+  box-sizing: border-box;
   width: 31px;
+  height: 31px;
+  padding: 4px;
+  background-color: var(--color-kiev);
+  border-radius: 9999999px;
 }
 
 .blog-post__sharebar .share__link {
@@ -65,24 +72,60 @@
   line-height: 0;
 }
 
-.blog-post__sharebar .share__icon {
-  margin-right: var(--grid-gutter-s);
+.balloon__link .Icon-more {
+  margin-right: 5px;
+}
+
+.blog-post__sharebar-word-more {
+  vertical-align: middle;
+  height: 31px;
+  cursor: pointer;
+  line-height: 31px;
+}
+
+.balloon-content .share-component__icons {
+  height: 50px;
 }
 
 /* stylelint-disable selector-no-type */
 /* unknown class */
 
 .blog-post__sharebar .Icon-facebook use {
-  fill: var(--color-facebook);
+  fill: var(--color-thimphu);
 }
 
 .blog-post__sharebar .Icon-twitter use {
-  fill: var(--color-twitter);
+  fill: var(--color-thimphu);
+}
+
+.blog-post__sharebar .share__icon--facebook {
+  /* stylelint-disable declaration-no-important */
+  /* Need important for styling to persist */
+  margin-right: 0.4em !important;
+  /* stylelint-enable declaration-no-important */
+}
+
+.blog-post__sharebar .share__icon--twitter {
+  /* stylelint-disable declaration-no-important */
+  /* Need important for styling to persist */
+  margin-right: var(--grid-gutter-xs) !important;
+  /* stylelint-enable declaration-no-important */
+}
+
+.blog-post__sharebar .Icon-more use {
+  fill: var(--color-thimphu);
+}
+
+.share-component__icons .Icon-linkedin,
+.share-component__icons .Icon-googleplus,
+.share-component__icons .Icon-mail,
+.share-component__icons .Icon-print {
+  background-color: var(--color-berlin);
 }
 
 .blog-post__sharebar .balloon-content svg,
 .blog-post__sharebar .balloon-content use {
-  fill: var(--color-thimphu);
+  fill: var(--color-kiev);
 }
 
 /* stylelint-enable selector-no-type */
@@ -105,6 +148,30 @@
 
 .blog-post__sharebar .balloon__triangle {
   border-bottom-color: var(--color-kiev);
+}
+
+.blog-post__toggle-share .balloon__triangle {
+  top: 37px;
+  left: 15px;
+}
+
+.blog-post__sharebar .balloon--visible {
+  padding-right: 16px;
+  padding-left: 6px;
+  background-color: var(--color-berlin);
+}
+
+.blog-post__sharebar .balloon--not-visible {
+  padding-right: 16px;
+  padding-left: 6px;
+}
+
+.blog-post__toggle-share .balloon-content {
+  top: 43px;
+  /* stylelint-disable declaration-no-important */
+  /* Need important for style to persist */
+  left: -113px !important;
+  /* stylelint-enable declaration-no-important */
 }
 
 @media (--navigation-mobile-down) {

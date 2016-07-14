@@ -86,7 +86,7 @@
 }
 
 .blog-post__section {
-  margin: var(--blog-post-section-spacing, var(--grid-spacing-hedgehog)) 0;
+  margin: 0;
   color: var(--blog-post-color-section, var(--color-beijing));
   font-size: var(--text-size-step--2);
   font-weight: normal;

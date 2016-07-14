@@ -31,8 +31,8 @@ const MobileProviders = (
 export default function BlogPostSideBar() {
   const shareBarTrigger = (
     <a href="/Sections">
-      <Icon className="blog-post__sharebar-icon-share" icon="share" size="23px" />
-      <Icon className="blog-post__sharebar-icon-close" icon="close" size="23px" />
+      <Icon className="blog-post__sharebar-icon-more" icon="more" size="23px" />
+      <span className="blog-post__sharebar-word-more">More</span>
     </a>
   );
 
