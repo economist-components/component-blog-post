@@ -348,6 +348,20 @@ describe('BlogPost', () => {
       subject.handleImageLoaded();
       subject.applyImageAspect.should.not.have.been.called;
     });
+
+    it('overrides normal rules for specific image widths (implicit or explicit)', () => {
+      // the following image should be considered a 'wide' one, but because of slim overrides,
+      // it will be considered 'slim'
+      subject = new ArticleImage({
+        src:"someimage.jpg"
+      });
+
+      subject.setState = sinon.spy();
+      subject.applyImageAspect(290, 100)
+      subject.setState.should.have.been.calledWith({ aspectType: 'slim', aspectRecomputed: true });
+      subject.applyImageAspect(580, 100)
+      subject.setState.should.have.been.calledWith({ aspectType: 'slim', aspectRecomputed: true });
+    });
   });
 });
 
