@@ -49,26 +49,6 @@
   line-height: var(--text-line-height-sans-light-on-step--2);
 }
 
-.main-content__blog-post .flytitle-and-title__flytitle {
-  margin: 0 0 var(--blog-post-flytitle-spacing, var(--grid-spacing-mouse)) 0;
-  color: var(--blog-post-color-flytitle, var(--color-economist));
-  font-family: var(--fontfamily-sans);
-  font-size: var(--blog-post__flytitle-font-size);
-  font-weight: normal;
-  letter-spacing: var(--text-letter-spacing-sans-on-step-0);
-  line-height: var(--text-line-height-sans-on-step-0);
-}
-
-.main-content__blog-post .flytitle-and-title__title {
-  margin: 0 0 var(--blog-post-title-spacing, var(--grid-spacing-rabbit)) 0;
-  color: var(--blog-post-color-title, var(--color-beijing));
-  font-family: var(—blog-post__title-font-family, var(--fontfamily-serif));
-  font-size: var(--text-size-step-5);
-  font-weight: 500;
-  letter-spacing: var(--text-letter-spacing-serif-medium-on-step-5);
-  line-height: var(--text-line-height-serif-medium-on-step-5);
-}
-
 .blog-post__text,
 .blog-post__rubric {
   color: var(--blog-post-color-text, var(--color-beijing));

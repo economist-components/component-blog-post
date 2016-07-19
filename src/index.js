@@ -27,7 +27,7 @@ export default class BlogPost extends React.Component {
       sectionUrl: React.PropTypes.string,
       flyTitle: React.PropTypes.string,
       title: React.PropTypes.string.isRequired,
-      TitleComponent: React.PropTypes.oneOfType([ React.PropTypes.string, React.PropTypes.func ]).isRequired,
+      TitleComponent: React.PropTypes.func.isRequired,
       rubric: React.PropTypes.string,
       dateTime: React.PropTypes.instanceOf(Date),
       dateString: React.PropTypes.string,
