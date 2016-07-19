@@ -49,7 +49,7 @@
   line-height: var(--text-line-height-sans-light-on-step--2);
 }
 
-.blog-post__flytitle {
+.main-content__blog-post .flytitle-and-title__flytitle {
   margin: 0 0 var(--blog-post-flytitle-spacing, var(--grid-spacing-mouse)) 0;
   color: var(--blog-post-color-flytitle, var(--color-economist));
   font-family: var(--fontfamily-sans);
@@ -59,7 +59,7 @@
   line-height: var(--text-line-height-sans-on-step-0);
 }
 
-.blog-post__title {
+.main-content__blog-post .flytitle-and-title__title {
   margin: 0 0 var(--blog-post-title-spacing, var(--grid-spacing-rabbit)) 0;
   color: var(--blog-post-color-title, var(--color-beijing));
   font-family: var(—blog-post__title-font-family, var(--fontfamily-serif));
