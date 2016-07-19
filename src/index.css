@@ -13,7 +13,6 @@
   --slim-max-width: 290px;
   --slim-margin: 30px;
   --slim-margin-top: 8px;
-  --blog-post__flytitle-font-size: 0.88rem;
 }
 
 @custom-media --blog-post-small-layout screen and (width >= 690px);
