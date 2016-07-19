@@ -13,6 +13,7 @@
   --slim-max-width: 290px;
   --slim-margin: 30px;
   --slim-margin-top: 8px;
+  --blog-post__flytitle-font-size: 0.88rem;
 }
 
 @custom-media --blog-post-small-layout screen and (width >= 690px);
@@ -51,9 +52,11 @@
 .blog-post__flytitle {
   margin: 0 0 var(--blog-post-flytitle-spacing, var(--grid-spacing-mouse)) 0;
   color: var(--blog-post-color-flytitle, var(--color-economist));
-  font-size: var(--text-size-step--1);
+  font-family: var(--fontfamily-sans);
+  font-size: var(--blog-post__flytitle-font-size);
   font-weight: normal;
-  line-height: var(--text-line-height-sans-light-on-step--1);
+  letter-spacing: var(--text-letter-spacing-sans-on-step-0);
+  line-height: var(--text-line-height-sans-on-step-0);
 }
 
 .blog-post__title {
@@ -228,4 +231,3 @@
     border-bottom: 1px solid var(--color-berlin);
   }
 }
-

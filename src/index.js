@@ -8,7 +8,6 @@ import React from 'react';
 import Rubric from './parts/rubric';
 import ShareBar from './parts/blog-post-sharebar';
 import Text from './parts/text';
-import Title from './parts/title';
 import Sticky from '@economist/component-stickyfill';
 
 import classnames from 'classnames';
@@ -239,8 +238,7 @@ export default class BlogPost extends React.Component {
         role="article"
         ref="article"
       >
-        <FlyTitle title={this.props.flyTitle} key="blog-post__flytitle" />
-        <Title title={this.props.title} key="blog-post__title" />
+        <FlyTitle flyTitle={this.props.flyTitle} title={this.props.title} key="blog-post__flytitle" />
         {content}
 
       </article>
