@@ -4,7 +4,7 @@ import React from 'react';
  * This component models an inline image occurring within an article
  * 2016.07.18: fix/1177: 'Slim' images can also have a 'wide' aspect (W > H) but still being 'small' in size (290px)
  *    For this reason we've to account for exceptions:
- *     - slim images: images where H > W OR W = 290px
+ *     - slim images: images where H > W OR W = 290px OR W = 580px
  **/
 class ArticleImage extends React.Component {
   constructor(props) {
@@ -45,7 +45,7 @@ class ArticleImage extends React.Component {
    **/
   hasSlimOverride(width) {
     /* eslint-disable no-magic-numbers */
-    const slimOverrides = [ 290 ];
+    const slimOverrides = [ 290, 580 ];
     /* eslint-enable no-magic-numbers */
     return slimOverrides.indexOf(width) >= 0;
   }
