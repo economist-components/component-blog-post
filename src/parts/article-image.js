@@ -5,6 +5,7 @@ import React from 'react';
  * 2016.07.18: fix/1177: 'Slim' images can also have a 'wide' aspect (W > H) but still being 'small' in size (290px)
  *    For this reason we've to account for exceptions:
  *     - slim images: images where H > W OR W = 290px OR W = 580px
+ *     - wide images: images where W > H OR W = 595px OR W = 1190px
  **/
 class ArticleImage extends React.Component {
   constructor(props) {
@@ -50,7 +51,18 @@ class ArticleImage extends React.Component {
     return slimOverrides.indexOf(width) >= 0;
   }
 
+  hasWideOverride(width) {
+    /* eslint-disable no-magic-numbers */
+    const wideOverrides = [ 595, 1190 ];
+    /* eslint-enable no-magic-numbers */
+    return wideOverrides.indexOf(width) >= 0;
+  }
+
   applyImageAspect(width, height) {
+    // if there's a wide override for this image, bail out
+    if (this.hasWideOverride(width)) {
+      return;
+    }
     // if the image is taller than wider, then it's a slim one
     if (this.hasSlimOverride(width) || height > width) {
       // tag the image as 'slim'

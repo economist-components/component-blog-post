@@ -359,8 +359,15 @@ describe('BlogPost', () => {
       subject.setState = sinon.spy();
       subject.applyImageAspect(290, 100)
       subject.setState.should.have.been.calledWith({ aspectType: 'slim', aspectRecomputed: true });
+      subject.setState.reset();
       subject.applyImageAspect(580, 100)
       subject.setState.should.have.been.calledWith({ aspectType: 'slim', aspectRecomputed: true });
+      subject.setState.reset();
+      subject.applyImageAspect(595, 900)
+      subject.setState.should.not.have.been.called;
+      subject.setState.reset();
+      subject.applyImageAspect(1190, 2900)
+      subject.setState.should.not.have.been.called;
     });
   });
 });
