@@ -27,6 +27,7 @@ const requiredProps = {
   commentsUri: 'http://google.com',
   viewCommentsLabel: 'foo',
   commentStatus: 'readwrite',
+  TitleComponent: ({ flyTitle, title }) => (<div className="test-title-component">test: {flyTitle} {title}</div>),
 };
 
 const mountComponentWithProps = mountComponent(requiredProps);
@@ -52,16 +53,9 @@ describe('BlogPost', () => {
       post.find('.blog-post__section').should.have.tagName('h3');
     });
 
-    it('renders a flytitle', () => {
+    it('renders a title component', () => {
       post.should.have.className('blog-post')
-      .and.have.exactly(1).descendants('.blog-post__flytitle');
-      post.find('.blog-post__flytitle').should.have.text(requiredProps.flyTitle);
-    });
-
-    it('renders a title', () => {
-      post.should.have.exactly(1).descendants('.blog-post__title');
-      post.find('.blog-post__title').should.have.tagName('h1');
-      post.find('.blog-post__title').should.have.text(requiredProps.title);
+      .and.have.exactly(1).descendants('.test-title-component');
     });
 
     it('renders a text', () => {
@@ -168,8 +162,6 @@ describe('BlogPost', () => {
   describe('Invalid props', () => {
     it('should render when `props.image` is null', () => {
       const post = mountComponentWithProps({ image: null });
-      post.should.have.exactly(1).descendants('.blog-post__flytitle');
-      post.should.have.exactly(1).descendants('.blog-post__title');
       post.should.have.exactly(1).descendants('.blog-post__text');
       post.should.not.have.descendants('.blog-post__image');
     });
@@ -337,7 +329,7 @@ describe('BlogPost', () => {
 
       // when the component mount, it will call applyImageAspect
       subject.componentWillMount();
-      
+
       // check that the image is marked as computed after mount
       subject.applyImageAspect.should.have.been.called;
       subject.setState.should.have.been.calledWith({ aspectRecomputed: true });
@@ -364,4 +356,3 @@ describe('BlogPost', () => {
     });
   });
 });
-
