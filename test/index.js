@@ -1,7 +1,6 @@
 /* eslint-disable */
 import 'babel-polyfill';
 import BlogPost from '../src';
-import ArticleImage from '../lib/parts/article-image';
 import MobileDetect from 'mobile-detect';
 import React from 'react';
 import chai from 'chai';
@@ -258,116 +257,6 @@ describe('BlogPost', () => {
         balloonContentNode.find('.share__icon--whatsapp').find('a')
           .should.have.attr('href', 'whatsapp://send?text=');
       });
-    });
-  });
-
-  describe('images', () => {
-    // subject under test
-    let subject = null;
-
-    it('tags wide images according to their attributed measures', () => {
-      subject = new ArticleImage({
-        src:"http://cdn.static-economist.com/sites/default/files/images/2016/07/articles/body/20160709_brp006.jpg",
-        width: "1090",
-        height: "450"
-      });
-      subject.setState = sinon.spy();
-      subject.componentWillMount();
-      // check that the image is marked as 'normal'
-      subject.setState.should.have.been.calledWith({ aspectRecomputed: true });
-    });
-
-    it('tags slim images according to their attributed measures', () => {
-      subject = new ArticleImage({
-        src:"http://cdn.static-economist.com/sites/default/files/images/2016/07/articles/body/20160709_brp006.jpg",
-        width: "290",
-        height: "450"
-      });
-      subject.setState = sinon.spy();
-      subject.componentWillMount();
-      // check that the image is marked as 'slim'
-      subject.setState.should.have.been.calledWith({ aspectType: 'slim', aspectRecomputed: true });
-    });
-
-    it('tags wide images with no measures according to their aspect', () => {
-      subject = new ArticleImage({
-        src:"http://cdn.static-economist.com/sites/default/files/images/2016/07/articles/body/20160709_brp006.jpg",
-      });
-      subject.refs = {
-        image: {
-          naturalWidth: 595,
-          naturalHeight: 375
-        }
-      };
-      subject.handleImageLoaded();
-
-      // check that the image is marked as 'normal'
-      subject.state.aspectType.should.equal('normal');
-    });
-
-    it('tags slim images with no measures according to their aspect', () => {
-      subject = new ArticleImage({
-        src:"http://cdn.static-economist.com/sites/default/files/images/2016/07/articles/body/20160709_brp006.jpg",
-      });
-      subject.setState = sinon.spy();
-      subject.refs = {
-        image: {
-          naturalWidth: 290,
-          naturalHeight: 515
-        }
-      };
-      subject.handleImageLoaded();
-
-      // check that the image is marked as 'slim'
-      subject.setState.should.have.been.calledWith({ aspectType: 'slim', aspectRecomputed: true });
-    });
-
-    it('uses the measure in the image if present', () => {
-      // using an image with explicit measures, the applyImageAspect function
-      // should be called only once (when the component mount and before the
-      // first state change)
-      subject = new ArticleImage({
-        src:"http://cdn.static-economist.com/sites/default/files/images/2016/07/articles/body/20160709_brp006.jpg",
-        alt:"",
-        height:"317",
-        width:"290"
-      });
-      sinon.spy(ArticleImage.prototype, 'applyImageAspect');
-      subject.setState = sinon.spy();
-
-      // when the component mount, it will call applyImageAspect
-      subject.componentWillMount();
-      
-      // check that the image is marked as computed after mount
-      subject.applyImageAspect.should.have.been.called;
-      subject.setState.should.have.been.calledWith({ aspectRecomputed: true });
-
-      // if handleImageLoaded is called, no additional calls to applyImageAspect are made
-      subject.applyImageAspect.reset();
-      subject.state.aspectRecomputed = true;
-      subject.handleImageLoaded();
-      subject.applyImageAspect.should.not.have.been.called;
-    });
-
-    it('overrides normal rules for specific image widths (implicit or explicit)', () => {
-      // the following image should be considered a 'wide' one, but because of slim overrides,
-      // it will be considered 'slim'
-      subject = new ArticleImage({
-        src:"someimage.jpg"
-      });
-
-      subject.setState = sinon.spy();
-      subject.applyImageAspect(290, 100)
-      subject.setState.should.have.been.calledWith({ aspectType: 'slim', aspectRecomputed: true });
-      subject.setState.reset();
-      subject.applyImageAspect(580, 100)
-      subject.setState.should.have.been.calledWith({ aspectType: 'slim', aspectRecomputed: true });
-      subject.setState.reset();
-      subject.applyImageAspect(595, 900)
-      subject.setState.should.not.have.been.called;
-      subject.setState.reset();
-      subject.applyImageAspect(1190, 2900)
-      subject.setState.should.not.have.been.called;
     });
   });
 });
