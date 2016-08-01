@@ -33,9 +33,9 @@
 }
 
 .blog-post__section-date-author {
-  align-self: center;
   padding-top: var(--grid-spacing-mouse);
   padding-bottom: var(--grid-spacing-mouse);
+  align-self: center;
 }
 
 .blog-post__image-block {
