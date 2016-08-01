@@ -221,18 +221,18 @@ describe('BlogPost', () => {
         }
       });
 
+      it('shows some share providers outside the more menu', () => {
+        const post = mountComponentWithProps();
+        post.find('.share__icon--twitter').find('a')
+          .should.have.attr('href', 'https://twitter.com/intent/tweet?url=');
+        post.find('.share__icon--facebook').find('a')
+          .should.have.attr('href', 'http://www.facebook.com/sharer/sharer.php?u=');
+      });
+
       it('should show the mobile providers', () => {
         const post = mountComponentWithProps();
         const shareBalloonNode = post.find('.blog-post__toggle-share-mobile');
         const balloonContentNode = shareBalloonNode.find('.balloon-content');
-        balloonContentNode.should.have.exactly(1).descendants('.share__icon--twitter');
-        balloonContentNode.find('.share__icon--twitter').find('a')
-          .should.have.attr('href', 'https://twitter.com/intent/tweet?url=');
-
-        balloonContentNode.should.have.exactly(1).descendants('.share__icon--facebook');
-        balloonContentNode.find('.share__icon--facebook').find('a')
-          .should.have.attr('href', 'http://www.facebook.com/sharer/sharer.php?u=');
-
         balloonContentNode.should.have.exactly(1).descendants('.share__icon--linkedin');
         balloonContentNode.find('.share__icon--linkedin').find('a')
           .should.have.attr('href', 'https://www.linkedin.com/cws/share?url=');
