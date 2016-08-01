@@ -17,8 +17,6 @@ const MobileProviders = (
   <div className="blog-post__sharebar-mobile">
     <ShareBar
       icons={[
-        'facebook',
-        'twitter',
         'linkedin',
         'googleplus',
         'mail',
@@ -45,7 +43,7 @@ export default function BlogPostSideBar() {
 
   return (
     <div className="blog-post__sharebar">
-      {!isMobile && <ShareBar icons={[ 'twitter', 'facebook' ]} />}
+      <ShareBar icons={[ 'twitter', 'facebook' ]} />
       <Balloon
         className={classnames(
           'blog-post__toggle-share',

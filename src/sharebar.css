@@ -48,8 +48,10 @@
 }
 
 .blog-post__sharebar {
+  height: 55px;
   display: flex;
   align-items: center;
+  align-self: center;
   flex-wrap: wrap;
 }
 
@@ -73,7 +75,7 @@
 }
 
 .balloon__link .Icon-more {
-  margin-right: 5px;
+  margin-right: var(--grid-spacing-rabbit);
 }
 
 .blog-post__sharebar-word-more {
@@ -101,14 +103,15 @@
 .blog-post__sharebar .share__icon--facebook {
   /* stylelint-disable declaration-no-important */
   /* Need important for styling to persist */
-  margin-right: 0.4em !important;
+  /*margin-right: 0.4em !important;*/
+  margin-right: var(--grid-spacing-hedgehog) !important;
   /* stylelint-enable declaration-no-important */
 }
 
 .blog-post__sharebar .share__icon--twitter {
   /* stylelint-disable declaration-no-important */
   /* Need important for styling to persist */
-  margin-right: var(--grid-gutter-xs) !important;
+  margin-right: var(--grid-spacing-rabbit) !important;
   /* stylelint-enable declaration-no-important */
 }
 
@@ -119,7 +122,9 @@
 .share-component__icons .Icon-linkedin,
 .share-component__icons .Icon-googleplus,
 .share-component__icons .Icon-mail,
-.share-component__icons .Icon-print {
+.share-component__icons .Icon-print,
+.share-component__icons .Icon-whatsapp
+ {
   background-color: var(--color-berlin);
 }
 
@@ -151,27 +156,24 @@
 }
 
 .blog-post__toggle-share .balloon__triangle {
-  top: 37px;
+  top: 46px;
   left: 15px;
 }
 
 .blog-post__sharebar .balloon--visible {
-  padding-right: 16px;
-  padding-left: 6px;
+  height: 100%;
   background-color: var(--color-berlin);
+  padding-left: var(--grid-spacing-hedgehog);
+  padding-right: var(--grid-spacing-hedgehog);
 }
 
 .blog-post__sharebar .balloon--not-visible {
-  padding-right: 16px;
-  padding-left: 6px;
+  padding-left: var(--grid-spacing-hedgehog);
+  padding-right: var(--grid-spacing-hedgehog);
 }
 
 .blog-post__toggle-share .balloon-content {
-  top: 43px;
-  /* stylelint-disable declaration-no-important */
-  /* Need important for style to persist */
-  left: -113px !important;
-  /* stylelint-enable declaration-no-important */
+  top: 52px;
 }
 
 @media (--navigation-mobile-down) {
@@ -184,7 +186,7 @@
 
 @media (--navigation-big-desktop-up) {
   .blog-post__sharebar {
-    padding-left: var(--grid-gutter-xs);
+    padding-left: var(--grid-spacing-hedgehog);
     justify-content: flex-start;
   }
 }
