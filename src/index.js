@@ -239,7 +239,7 @@ export default class BlogPost extends React.Component {
         role="article"
         ref="article"
       >
-        <TitleComponent title={this.props.title} flyTitle={this.props.flyTitle} />
+        <TitleComponent title={this.props.title} flyTitle={this.props.flyTitle} Heading={"h1"} />
         {content}
 
       </article>
