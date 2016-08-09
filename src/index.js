@@ -214,7 +214,7 @@ export default class BlogPost extends React.Component {
       wrappedInnerContent.push(<Author key="blog-post__author" author={this.props.author} />);
     }
     wrappedInnerContent.push(<Text text={this.props.text} key="blog-post__text" />);
-    wrappedInnerContent.push(this.props.afterText);
+    wrappedInnerContent.push(<div key="blog-post__after-text">{this.props.afterText}</div>);
     content.push(<div className="blog-post__inner" key="inner-content">{wrappedInnerContent}</div>);
     const { commentCount, commentStatus } = this.props;
     if (commentStatus !== 'disabled' && !(commentStatus === 'readonly' && commentCount === 0)) {
