@@ -52,6 +52,7 @@ export default class BlogPost extends React.Component {
       dateString: React.PropTypes.string,
       timestampISO: React.PropTypes.string,
       dateFormat: React.PropTypes.func,
+      locationCreated: React.PropTypes.string,
       text: React.PropTypes.oneOfType([
         React.PropTypes.string,
         React.PropTypes.node,
@@ -147,6 +148,18 @@ export default class BlogPost extends React.Component {
         >{dateString}</time>));
     }
     return result;
+  }
+
+  addLocationCreated(sectionDateAuthor, locationCreated) {
+    if (locationCreated) {
+      sectionDateAuthor = sectionDateAuthor.concat((
+        <span
+          className="blog-post__location-created"
+          key="blog-post__location-created"
+        >{` | ${ locationCreated }`}</span>
+      ));
+    }
+    return sectionDateAuthor;
   }
 
   addImage(content, image = {}) {
@@ -314,6 +327,7 @@ export default class BlogPost extends React.Component {
     content = this.addRubric(content, this.props.rubric);
     sectionDateAuthor = this.addBlogPostSection(sectionDateAuthor, this.props.section, this.props.sectionUrl);
     sectionDateAuthor = this.addDateTime(sectionDateAuthor, this.props);
+    sectionDateAuthor = this.addLocationCreated(sectionDateAuthor, this.props.locationCreated);
     sectionDateAuthor = this.addByLine(sectionDateAuthor, this.props.byline);
     if (sectionDateAuthor.length) {
       asideableContent.push(

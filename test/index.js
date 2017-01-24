@@ -201,6 +201,22 @@ describe('BlogPost', () => {
     post.find('.blog-post__datetime').should.have.text(today.toString());
   });
 
+  it('does not render a location created when none is provided', () => {
+    const post = mountComponentWithProps({
+      locationCreated: '',
+    });
+    post.should.not.have.descendants('.blog-post__location-created');
+  });
+
+  it('renders a location created', () => {
+    const post = mountComponentWithProps({
+      locationCreated: 'Paris',
+    });
+    post.should.have.exactly(1).descendants('.blog-post__location-created');
+    post.find('.blog-post__location-created').should.have.tagName('span');
+    post.find('.blog-post__location-created').should.have.text(' | Paris');
+  });
+
   it('can render the text as react "children" as opposed to dangerouslySetInnerHTML', () => {
     const post = mountComponentWithProps({ text: <div className="foo" /> });
     post.find('.blog-post__text').should.have.exactly(1).descendants('.foo');

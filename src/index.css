@@ -74,7 +74,8 @@
 }
 
 .blog-post__datetime,
-.blog-post__byline-container {
+.blog-post__byline-container,
+.blog-post__location-created {
   color: var(--blog-post-color-datetime, var(--color-moscow));
   font-size: var(--text-size-step--3);
   letter-spacing: var(--text-letter-spacing-sans-light-on-step--2);
@@ -87,7 +88,8 @@
   font-style: italic;
 }
 
-.blog-post__datetime {
+.blog-post__datetime,
+.blog-post__location-created {
   font-family: var(—-blog-post__datetime-font-family, var(--fontfamily-sans));
   font-weight: 300;
 }
