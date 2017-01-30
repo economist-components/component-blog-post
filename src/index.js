@@ -5,7 +5,7 @@ import Comments from './parts/comments';
 import ImageCaption from './parts/image-caption';
 import React from 'react';
 import Rubric from './parts/rubric';
-import ShareBar from './parts/blog-post-sharebar';
+import ShareBar, { getIconsPropTypes } from './parts/blog-post-sharebar';
 import Text from './parts/text';
 import { siblingList } from './parts/blog-post-siblings-list';
 
@@ -79,8 +79,8 @@ export default class BlogPost extends React.Component {
       articleListPosition: React.PropTypes.number,
       classNameModifier: React.PropTypes.string,
       siblingListSideTitle: React.PropTypes.string,
-      shareBarDesktopIcons: React.PropTypes.array,
-      shareBarMobileIcons: React.PropTypes.array,
+      shareBarDesktopIcons: getIconsPropTypes(),
+      shareBarMobileIcons: getIconsPropTypes(),
       reuseButton: React.PropTypes.node,
       printEdition: React.PropTypes.bool,
     };
