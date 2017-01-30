@@ -146,7 +146,7 @@ describe('BlogPost', () => {
       post.should.have.exactly(1).descendants('.blog-post__comments');
       post.find('.blog-post__comments').should.have.attr('href', requiredProps.commentsUri);
       post.find('.blog-post__comments-label')
-      .should.have.text('foo (10)');
+      .should.have.text('foo');
     });
 
     it('renders the comments (#comments = 0)', () => {

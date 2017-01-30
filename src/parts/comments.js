@@ -3,19 +3,20 @@ import React from 'react';
 export default function Comments({ firstToCommentLabel, commentCount, viewCommentsLabel, commentsUri }) {
   let content = firstToCommentLabel;
   let pre = null;
-  let post = null;
   if (commentCount > 0) {
-    content = commentCount;
-    pre = <span className="blog-post__comments-contentwrapper">{`${ viewCommentsLabel } (`}</span>;
-    post = <span className="blog-post__comments-contentwrapper">{')'}</span>;
+    content = '';
+    pre = <span className="blog-post__comments-contentwrapper">{`${ viewCommentsLabel }`}</span>;
+  }
+  let contentNode = <span className="blog-post__comments-content">{content}</span>;
+  if (content === '') {
+    contentNode = null;
   }
   return (
     <a className="blog-post__comments" href={commentsUri}>
       <div className="blog-post__comments-icon icon icon--balloon-berlin" />
       <div className="blog-post__comments-label">
         {pre}
-        <span className="blog-post__comments-content">{content}</span>
-        {post}
+        {contentNode}
       </div>
     </a>
   );
