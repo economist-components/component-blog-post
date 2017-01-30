@@ -35,7 +35,6 @@ function createTrigger(buttonName) {
 /* eslint-disable react/prop-types */
 function createSharebar(props, icons, platform) {
   const hasPurchaseRights = icons.includes('purchaseRights');
-  props.icons = icons;
   if (hasPurchaseRights) {
     const { type, title, publicationDate, contentID } = props;
     props.urlOverrides.purchaseRights = generateCopyrightUrl(
@@ -49,12 +48,12 @@ function createSharebar(props, icons, platform) {
         className={`blog-post__sharebar-${ platform }`}
         style={props.type ? { fontSize: '30px' } : {}}
       >
-        <ShareBar {...props} />
+        <ShareBar icons={icons} {...props} />
       </div>
     );
   } else { // eslint-disable-line no-else-return
     return (
-      <ShareBar {...props} />
+      <ShareBar icons={icons} {...props} />
     );
   }
 }
