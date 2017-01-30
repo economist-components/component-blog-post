@@ -32,6 +32,7 @@ function createTrigger(buttonName) {
   );
 }
 
+/* eslint-disable react/prop-types */
 function createSharebar(props, icons, platform) {
   const hasPurchaseRights = icons.includes('purchaseRights');
   props.icons = icons;
@@ -51,26 +52,27 @@ function createSharebar(props, icons, platform) {
         <ShareBar {...props} />
       </div>
     );
-  } else {
+  } else { // eslint-disable-line no-else-return
     return (
       <ShareBar {...props} />
     );
   }
 }
+/* eslint-enable react/prop-types */
 
 export default function BlogPostShareBar(props) {
   let isMobile = false;
   let deviceIcons = [];
   if (typeof window !== 'undefined') {
-    isMobile = new MobileDetect(window.navigator.userAgent).mobile() !== null;
+    isMobile = new MobileDetect(window.navigator.userAgent).mobile() !== null; // eslint-disable-line no-undef
   }
   deviceIcons = isMobile ? props.mobileIcons : props.desktopIcons;
 
   const platform = isMobile ? 'mobile' : 'desktop';
   return (
     <div className="blog-post__sharebar">
-      {createSharebar(props, deviceIcons.filter(value => typeof value === 'string'), platform)}
-      {deviceIcons.filter(value => typeof value === 'object')
+      {createSharebar(props, deviceIcons.filter((value) => typeof value === 'string'), platform)}
+      {deviceIcons.filter((value) => typeof value === 'object')
         .map((balloon, i) => (
           <Balloon
             key={`blog-post__sharebar-balloon-${ i }`}
@@ -91,14 +93,14 @@ export default function BlogPostShareBar(props) {
 
 BlogPostShareBar.defaultProps = {
   desktopIcons: [ 'twitter', 'facebook', {
-      buttonName: 'More',
-      icons: [ 'linkedin', 'googleplus', 'mail', 'print', 'purchaseRights' ],
-    },
+    buttonName: 'More',
+    icons: [ 'linkedin', 'googleplus', 'mail', 'print', 'purchaseRights' ],
+  },
   ],
   mobileIcons: [ 'twitter', 'facebook', {
-      buttonName: 'More',
-      icons: [ 'linkedin', 'googleplus', 'mail', 'whatsapp', 'purchaseRights' ],
-    },
+    buttonName: 'More',
+    icons: [ 'linkedin', 'googleplus', 'mail', 'whatsapp', 'purchaseRights' ],
+  },
   ],
   urlOverrides: { mail: 'mailto:?body=' },
 };
