@@ -110,7 +110,7 @@ export function getIconsPropTypes() {
     React.PropTypes.string,
     React.PropTypes.shape({
       buttonName: React.PropTypes.string.isRequired,
-      icons: React.PropTypes.arrayOf(React.propTypes.string).isRequired,
+      icons: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
     }),
   ]));
 }
@@ -124,6 +124,6 @@ if (process.env.NODE_ENV !== 'production') {
     publicationDate: React.PropTypes.string,
     desktopIcons: getIconsPropTypes(),
     mobileIcons: getIconsPropTypes(),
-    urlOverrides: React.PropTypes.objectOf(React.propTypes.string),
+    urlOverrides: React.PropTypes.objectOf(React.PropTypes.string),
   };
 }
