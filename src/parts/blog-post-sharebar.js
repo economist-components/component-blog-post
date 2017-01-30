@@ -6,8 +6,8 @@ import ShareBar from '@economist/component-sharebar';
 import classnames from 'classnames';
 import url from 'url';
 
-const generateCopyrightUrl = (type, title, publicationDate, contentID) => (
-  url.format({
+function generateCopyrightUrl(type, title, publicationDate, contentID) {
+  return url.format({
     protocol: 'https:',
     host: 's100.copyright.com',
     pathname: '/AppDispatchServlet',
@@ -20,19 +20,22 @@ const generateCopyrightUrl = (type, title, publicationDate, contentID) => (
       type,
       orderBeanReset: 0,
     },
-  })
-)
+  });
+}
 
-const createTrigger = buttonName => (
-  <a href="/Sections">
-    <Icon className="blog-post__sharebar-icon-more" icon="more" size="23px" />
-    <span className="blog-post__sharebar-word-more">{buttonName}</span>
-  </a>
-);
+function createTrigger(buttonName) {
+  return (
+    <a href="/Sections">
+      <Icon className="blog-post__sharebar-icon-more" icon="more" size="23px" />
+      <span className="blog-post__sharebar-word-more">{buttonName}</span>
+    </a>
+  );
+}
 
-const createSharebar = (props, platform) => {
-  const hasPurchaseRights = props.icons.includes('purchaseRights');
-  if(hasPurchaseRights) {
+function createSharebar(props, icons, platform) {
+  const hasPurchaseRights = icons.includes('purchaseRights');
+  props.icons = icons;
+  if (hasPurchaseRights) {
     const { type, title, publicationDate, contentID } = props;
     props.urlOverrides.purchaseRights = generateCopyrightUrl(
       type,
@@ -45,7 +48,7 @@ const createSharebar = (props, platform) => {
         className={`blog-post__sharebar-${ platform }`}
         style={props.type ? { fontSize: '30px' } : {}}
       >
-        <ShareBar {...props}/>
+        <ShareBar {...props} />
       </div>
     );
   } else {
@@ -56,8 +59,6 @@ const createSharebar = (props, platform) => {
 }
 
 export default function BlogPostShareBar(props) {
-
-  //TODO: check on caching this information
   let isMobile = false;
   let deviceIcons = [];
   if (typeof window !== 'undefined') {
@@ -65,16 +66,10 @@ export default function BlogPostShareBar(props) {
   }
   deviceIcons = isMobile ? props.mobileIcons : props.desktopIcons;
 
-  const rootSharebarProps = {
-    ...props,
-    icons: deviceIcons.filter(value => typeof value === 'string'),
-  }
-
   const platform = isMobile ? 'mobile' : 'desktop';
-
   return (
     <div className="blog-post__sharebar">
-      {createSharebar(rootSharebarProps, platform)}
+      {createSharebar(props, deviceIcons.filter(value => typeof value === 'string'), platform)}
       {deviceIcons.filter(value => typeof value === 'object')
         .map((balloon, i) => (
           <Balloon
@@ -86,7 +81,7 @@ export default function BlogPostShareBar(props) {
             shadow={false}
             trigger={createTrigger(balloon.buttonName)}
           >
-            {createSharebar({...props, icons: balloon.icons}, platform)}
+            {createSharebar(props, balloon.icons, platform)}
           </Balloon>
         ))
       }
@@ -95,28 +90,38 @@ export default function BlogPostShareBar(props) {
 }
 
 BlogPostShareBar.defaultProps = {
-  desktopIcons: ['twitter', 'facebook', {
+  desktopIcons: [ 'twitter', 'facebook', {
       buttonName: 'More',
-      icons: ['linkedin', 'googleplus', 'mail', 'print', 'purchaseRights']
-    }
+      icons: [ 'linkedin', 'googleplus', 'mail', 'print', 'purchaseRights' ],
+    },
   ],
-  mobileIcons: ['twitter', 'facebook', {
+  mobileIcons: [ 'twitter', 'facebook', {
       buttonName: 'More',
-      icons: ['linkedin', 'googleplus', 'mail', 'whatsapp', 'purchaseRights']
-    }
+      icons: [ 'linkedin', 'googleplus', 'mail', 'whatsapp', 'purchaseRights' ],
+    },
   ],
   urlOverrides: { mail: 'mailto:?body=' },
 };
 
+export function getIconsPropTypes() {
+  return React.PropTypes.arrayOf(React.PropTypes.oneOfType([
+    React.PropTypes.string,
+    React.PropTypes.shape({
+      buttonName: React.PropTypes.string.isRequired,
+      icons: React.PropTypes.arrayOf(React.propTypes.string).isRequired,
+    }),
+  ]));
+}
+
 if (process.env.NODE_ENV !== 'production') {
   BlogPostShareBar.propTypes = {
     id: React.PropTypes.string,
-    type: React.PropTypes.oneOf(['BL', 'A']), // make into string maybe?
+    type: React.PropTypes.oneOf([ 'BL', 'A' ]),
     title: React.PropTypes.string,
     flyTitle: React.PropTypes.string,
     publicationDate: React.PropTypes.string,
-    desktopIcons: React.PropTypes.array, //TODO: make into recursive array
-    mobileIcons: React.PropTypes.array, //TODO: make into recursive array
-    urlOverrides: React.PropTypes.object, //TODO: change to shape
+    desktopIcons: getIconsPropTypes(),
+    mobileIcons: getIconsPropTypes(),
+    urlOverrides: React.PropTypes.objectOf(React.propTypes.string),
   };
 }
