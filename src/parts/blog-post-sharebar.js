@@ -36,19 +36,22 @@ function createTrigger(buttonName) {
 function createSharebar(props, icons, platform) {
   const hasPurchaseRights = icons.includes('purchaseRights');
   if (hasPurchaseRights) {
-    const { type, title, publicationDate, contentID } = props;
-    props.urlOverrides.purchaseRights = generateCopyrightUrl(
-      type,
-      title,
-      publicationDate,
-      contentID
-    );
+    const { type, title, publicationDate, contentID, urlOverrides } = props;
+    const copyrightUrlOverrides = Object.assign({}, urlOverrides, {
+      purchaseRights: generateCopyrightUrl(
+        type,
+        title,
+        publicationDate,
+        contentID
+      ),
+    });
+    const propData = Object.assign({}, props, { urlOverrides: copyrightUrlOverrides });
     return (
       <div
         className={`blog-post__sharebar-${ platform }`}
-        style={props.type ? { fontSize: '30px' } : {}}
+        style={type ? { fontSize: '30px' } : {}}
       >
-        <ShareBar icons={icons} {...props} />
+        <ShareBar icons={icons} {...propData} />
       </div>
     );
   } else { // eslint-disable-line no-else-return
