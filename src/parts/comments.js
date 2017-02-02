@@ -1,6 +1,11 @@
 import React from 'react';
 
-export default function Comments({ firstToCommentLabel, commentCount, viewCommentsLabel, commentsUri }) {
+export default function Comments({
+  firstToCommentLabel,
+  commentCount,
+  viewCommentsLabel,
+  commentsUri,
+}) {
   return (
     <a className="blog-post__comments" href={commentsUri}>
       <div className="blog-post__comments-icon icon icon--balloon-berlin" />
