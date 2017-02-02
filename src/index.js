@@ -265,7 +265,8 @@ export default class BlogPost extends React.Component {
     const modifier = secondaryListModifier;
     const blogPostTextElements = this.filterBlogPostTextElements(content);
     const secondaryListElement = (<SecondaryListComponent content={secondaryList} modifier={modifier} />);
-    const position = showSiblingArticlesList ? secondaryListPosition + 1 : secondaryListPosition;
+    const alternateListPosition = 4;
+    const position = showSiblingArticlesList ? secondaryListPosition + alternateListPosition : secondaryListPosition;
     blogPostTextElements.splice(position, 0, secondaryListElement);
   }
 
