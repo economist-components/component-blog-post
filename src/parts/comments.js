@@ -1,21 +1,18 @@
 import React from 'react';
 
-export default function Comments({ firstToCommentLabel, commentCount, viewCommentsLabel, commentsUri }) {
-  let content = firstToCommentLabel;
-  let pre = null;
-  let post = null;
-  if (commentCount > 0) {
-    content = commentCount;
-    pre = <span className="blog-post__comments-contentwrapper">{`${ viewCommentsLabel } (`}</span>;
-    post = <span className="blog-post__comments-contentwrapper">{')'}</span>;
-  }
+export default function Comments({
+  firstToCommentLabel,
+  commentCount,
+  viewCommentsLabel,
+  commentsUri,
+}) {
   return (
     <a className="blog-post__comments" href={commentsUri}>
       <div className="blog-post__comments-icon icon icon--balloon-berlin" />
       <div className="blog-post__comments-label">
-        {pre}
-        <span className="blog-post__comments-content">{content}</span>
-        {post}
+        <span className={commentCount > 0 ? 'blog-post__comments-contentwrapper' : ''}>
+          {commentCount > 0 ? viewCommentsLabel : firstToCommentLabel}
+        </span>
       </div>
     </a>
   );

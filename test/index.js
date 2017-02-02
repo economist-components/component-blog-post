@@ -146,7 +146,7 @@ describe('BlogPost', () => {
       post.should.have.exactly(1).descendants('.blog-post__comments');
       post.find('.blog-post__comments').should.have.attr('href', requiredProps.commentsUri);
       post.find('.blog-post__comments-label')
-      .should.have.text('foo (10)');
+      .should.have.text('foo');
     });
 
     it('renders the comments (#comments = 0)', () => {
@@ -199,6 +199,22 @@ describe('BlogPost', () => {
     post.should.have.exactly(1).descendants('.blog-post__datetime');
     post.find('.blog-post__datetime').should.have.tagName('time');
     post.find('.blog-post__datetime').should.have.text(today.toString());
+  });
+
+  it('does not render a location created when none is provided', () => {
+    const post = mountComponentWithProps({
+      locationCreated: '',
+    });
+    post.should.not.have.descendants('.blog-post__location-created');
+  });
+
+  it('renders a location created', () => {
+    const post = mountComponentWithProps({
+      locationCreated: 'Paris',
+    });
+    post.should.have.exactly(1).descendants('.blog-post__location-created');
+    post.find('.blog-post__location-created').should.have.tagName('span');
+    post.find('.blog-post__location-created').should.have.text(' | Paris');
   });
 
   it('can render the text as react "children" as opposed to dangerouslySetInnerHTML', () => {
