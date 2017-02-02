@@ -254,17 +254,19 @@ export default class BlogPost extends React.Component {
     }
   }
 
-  addSecondaryList(
+  addSecondaryList({
     secondaryList,
     SecondaryListComponent,
     secondaryListPosition,
     secondaryListModifier,
-    content
-  ) {
+    content,
+    showSiblingArticlesList,
+  }) {
     const modifier = secondaryListModifier;
     const blogPostTextElements = this.filterBlogPostTextElements(content);
     const secondaryListElement = (<SecondaryListComponent content={secondaryList} modifier={modifier} />);
-    blogPostTextElements.splice(secondaryListPosition, 0, secondaryListElement);
+    const position = showSiblingArticlesList ? secondaryListPosition + 1 : secondaryListPosition;
+    blogPostTextElements.splice(position, 0, secondaryListElement);
   }
 
   addSiblingsList(siblingListProps) {
@@ -437,13 +439,15 @@ export default class BlogPost extends React.Component {
       printEdition,
     };
     this.addSiblingsList(siblingListProps);
-    this.addSecondaryList(
+    const secondaryListProps = {
       secondaryList,
       SecondaryListComponent,
       secondaryListPosition,
       secondaryListModifier,
-      content
-    );
+      content,
+      showSiblingArticlesList,
+    };
+    this.addSecondaryList(secondaryListProps);
     return (
       <article
         itemScope
