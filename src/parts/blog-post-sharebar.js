@@ -6,7 +6,7 @@ import ShareBar from '@economist/component-sharebar';
 import classnames from 'classnames';
 import url from 'url';
 
-function generateCopyrightUrl(type, title, publicationDate, contentID) {
+export function generateCopyrightUrl(type, title, publicationDate, contentID) {
   return url.format({
     protocol: 'https:',
     host: 's100.copyright.com',
@@ -119,7 +119,7 @@ export function getIconsPropTypes() {
 
 if (process.env.NODE_ENV !== 'production') {
   BlogPostShareBar.propTypes = {
-    id: React.PropTypes.string,
+    contentID: React.PropTypes.string,
     type: React.PropTypes.oneOf([ 'BL', 'A' ]),
     title: React.PropTypes.string,
     flyTitle: React.PropTypes.string,

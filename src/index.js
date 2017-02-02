@@ -81,7 +81,7 @@ export default class BlogPost extends React.Component {
       siblingListSideTitle: React.PropTypes.string,
       shareBarDesktopIcons: getIconsPropTypes(),
       shareBarMobileIcons: getIconsPropTypes(),
-      reuseButton: React.PropTypes.node,
+      reuseButtonMaker: React.PropTypes.func,
       printEdition: React.PropTypes.bool,
     };
   }
@@ -91,6 +91,7 @@ export default class BlogPost extends React.Component {
       itemProp: 'blogPost',
       firstToCommentLabel: 'Be the first to comment',
       viewCommentsLabel: 'View comments',
+      reuseButtonMaker: () => null,
       dateFormat: (date) => {
         const tenMinutes = 10;
         // Sep 19th 2015, 9:49
@@ -298,6 +299,8 @@ export default class BlogPost extends React.Component {
 
   render() {
     const {
+      id,
+      title,
       flyTitle,
       showSiblingArticlesList,
       siblingListSideTitle,
@@ -334,14 +337,15 @@ export default class BlogPost extends React.Component {
     shareBarPublicateDate = `${ String(shareBarPublicateDate.getFullYear()) }
     ${ String(twoDigits(shareBarPublicateDate.getMonth() + 1)) }
     ${ String(twoDigits(shareBarPublicateDate.getDate())) }`.replace(/\s/g, '');
+    const sharebarType = this.props.type === 'post' ? 'BL' : 'A';
     const shareBarDefault =
       (<ShareBar
         key="sharebar"
-        type={this.props.type === 'post' ? 'BL' : 'A'}
-        title={this.props.title}
-        flyTitle={this.props.flyTitle}
+        type={sharebarType}
+        title={title}
+        flyTitle={flyTitle}
         publicationDate={shareBarPublicateDate}
-        contentID={this.props.id}
+        contentID={id}
         desktopIcons={this.props.shareBarDesktopIcons}
         mobileIcons={this.props.shareBarMobileIcons}
        />);
@@ -370,7 +374,12 @@ export default class BlogPost extends React.Component {
           {commentSection}
         </div>
         <div className="blog-post__bottom-panel-bottom">
-          {this.props.reuseButton}
+          {this.props.reuseButtonMaker({
+            type: sharebarType,
+            title,
+            publicationDate: shareBarPublicateDate,
+            id,
+          })}
         </div>
       </div>
     );
