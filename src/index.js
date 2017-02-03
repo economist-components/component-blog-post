@@ -262,11 +262,16 @@ export default class BlogPost extends React.Component {
     content,
     showSiblingArticlesList,
   }) {
-    if (!secondaryList || !SecondaryListComponent) {
+    const blogPostTextElements = this.filterBlogPostTextElements(content);
+    /* eslint-disable arrow-body-style */
+    const isEnoughParagraphs = blogPostTextElements.find((element) => {
+      /* eslint-enable arrow-body-style */
+      return element.type === 'p';
+    });
+    if (!secondaryList || !SecondaryListComponent || !isEnoughParagraphs) {
       return null;
     }
     const modifier = secondaryListModifier;
-    const blogPostTextElements = this.filterBlogPostTextElements(content);
     const secondaryListElement = (
       <SecondaryListComponent key={`${ modifier }-secondaryList`} content={secondaryList} modifier={modifier} />
     );
