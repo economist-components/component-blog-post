@@ -85,7 +85,11 @@ export default class BlogPost extends React.Component {
       reuseButtonMaker: React.PropTypes.func,
       printEdition: React.PropTypes.bool,
       SecondaryListComponent: React.PropTypes.func,
-      secondaryList: React.PropTypes.object,
+      secondaryList: React.PropTypes.shape({
+        children: React.PropTypes.objectOf({
+          entries: React.PropTypes.arrayOf(React.PropTypes.object),
+        }),
+      }),
       secondaryListPosition: React.PropTypes.number,
       secondaryListModifier: React.PropTypes.string,
     };
@@ -268,7 +272,7 @@ export default class BlogPost extends React.Component {
     const blogPostTextElements = this.filterBlogPostTextElements(content);
     /* eslint-disable arrow-body-style */
     let isEnoughParagraphs = null;
-    if (typeof blogPostTextElements[0] === 'string') {
+    if (typeof blogPostTextElements[0] === 'object') {
       isEnoughParagraphs = blogPostTextElements.find((element) => {
         /* eslint-enable arrow-body-style */
         return element.type === 'p';
