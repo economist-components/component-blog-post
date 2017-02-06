@@ -262,13 +262,19 @@ export default class BlogPost extends React.Component {
     content,
     showSiblingArticlesList,
   }) {
+    if (!secondaryList || !SecondaryListComponent) {
+      return null;
+    }
     const blogPostTextElements = this.filterBlogPostTextElements(content);
     /* eslint-disable arrow-body-style */
-    const isEnoughParagraphs = blogPostTextElements.find((element) => {
-      /* eslint-enable arrow-body-style */
-      return element.type === 'p';
-    });
-    if (!secondaryList || !SecondaryListComponent || !isEnoughParagraphs) {
+    let isEnoughParagraphs = null;
+    if (typeof blogPostTextElements[0] === 'string') {
+      isEnoughParagraphs = blogPostTextElements.find((element) => {
+        /* eslint-enable arrow-body-style */
+        return element.type === 'p';
+      });
+    }
+    if (!isEnoughParagraphs) {
       return null;
     }
     const modifier = secondaryListModifier;
@@ -292,6 +298,9 @@ export default class BlogPost extends React.Component {
       nextArticleLink,
       printEdition,
     } = siblingListProps;
+    if (!issueSiblingsList || !showSiblingArticlesList) {
+      return;
+    }
     const siblingArticles = showSiblingArticlesList && issueSiblingsList ?
     issueSiblingsList : null;
     const { sideText, siblingListSideTitle, articleFootNote } = this.props;

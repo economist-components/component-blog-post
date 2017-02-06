@@ -36,13 +36,19 @@ const requiredProps = {
   commentStatus: 'readwrite',
   elementClassName: 'blog-post__classname',
   sectionName: 'Section name',
+  secondaryListModifier: 'modifier',
   TitleComponent: ({ flyTitle, title }) => (<div className="test-title-component">test: {flyTitle} {title}</div>),
 };
 
 const otherProps = {
   flyTitle: 'Other flyTitle',
   section: 'Other section',
-  text: 'Other text',
+  text: [
+    "paragraph 1 paragraph 1 paragraph 1",
+    "paragraph 2 paragraph 2 paragraph 2",
+    "paragraph 3 paragraph 3 paragraph 3",
+    "paragraph 4 paragraph 4 paragraph 4",
+  ],
   title: 'Other title',
   type: 'blog',
   id: 'test blog',
@@ -61,12 +67,6 @@ const otherProps = {
   sectionName: 'Special report',
   sideText: 'More in this report',
   TitleComponent: ({ flyTitle, title }) => (<div className="test-title-component">test: {flyTitle} {title}</div>),
-  text: [
-    "paragraph 1 paragraph 1 paragraph 1",
-    "paragraph 2 paragraph 2 paragraph 2",
-    "paragraph 3 paragraph 3 paragraph 3",
-    "paragraph 4 paragraph 4 paragraph 4",
-  ],
 }
 
 const mountComponentWithProps = mountComponent(requiredProps);
