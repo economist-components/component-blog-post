@@ -138,7 +138,7 @@ describe('BlogPost', () => {
   });
 
   describe('Comments', () => {
-    it('renders the comments (#comments > 0)', () => {
+    it('renders the comments', () => {
       const post = mountComponentWithProps({
         commentCount: 10,
         viewCommentsLabel: 'foo'
@@ -147,13 +147,6 @@ describe('BlogPost', () => {
       post.find('.blog-post__comments').should.have.attr('href', requiredProps.commentsUri);
       post.find('.blog-post__comments-label')
       .should.have.text('foo');
-    });
-
-    it('renders the comments (#comments = 0)', () => {
-      const post = mountComponentWithProps({ commentCount: 0 });
-      post.should.have.exactly(1).descendants('.blog-post__comments');
-      post.find('.blog-post__comments').should.have.attr('href', requiredProps.commentsUri);
-      post.find('.blog-post__comments-label').should.have.text('foo');
     });
 
     it('hides the comments when comments are disabled', () => {
