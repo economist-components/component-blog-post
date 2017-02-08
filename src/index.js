@@ -67,7 +67,6 @@ export default class BlogPost extends React.Component {
         'readwrite',
         'fbcommentplugin',
       ]).isRequired,
-      firstToCommentLabel: React.PropTypes.string.isRequired,
       viewCommentsLabel: React.PropTypes.string.isRequired,
       commentsUri: React.PropTypes.string.isRequired,
       blogImage: React.PropTypes.object,
@@ -90,7 +89,6 @@ export default class BlogPost extends React.Component {
     return {
       itemType: 'http://schema.org/BlogPosting',
       itemProp: 'blogPost',
-      firstToCommentLabel: 'Be the first to comment',
       viewCommentsLabel: 'View comments',
       reuseButtonMaker: () => null,
       dateFormat: (date) => {
@@ -374,7 +372,6 @@ export default class BlogPost extends React.Component {
       commentSection = (
         <Comments
           key="blog-post__comments"
-          firstToCommentLabel={this.props.firstToCommentLabel}
           commentCount={commentCount}
           viewCommentsLabel={this.props.viewCommentsLabel}
           commentsUri={this.props.commentsUri}
