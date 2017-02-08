@@ -84,14 +84,8 @@ export default class BlogPost extends React.Component {
       shareBarMobileIcons: getIconsPropTypes(),
       reuseButtonMaker: React.PropTypes.func,
       printEdition: React.PropTypes.bool,
-      SecondaryListComponent: React.PropTypes.func,
-      secondaryList: React.PropTypes.shape({
-        children: React.PropTypes.objectOf({
-          entries: React.PropTypes.arrayOf(React.PropTypes.object),
-        }),
-      }),
+      secondaryList: React.PropTypes.node,
       secondaryListPosition: React.PropTypes.number,
-      secondaryListModifier: React.PropTypes.string,
     };
   }
   static get defaultProps() {
@@ -258,15 +252,13 @@ export default class BlogPost extends React.Component {
     }
   }
 
-  addSecondaryList({
+  addSecondaryList(
     secondaryList,
-    SecondaryListComponent,
     secondaryListPosition,
-    secondaryListModifier,
     content,
-    showSiblingArticlesList,
-  }) {
-    if (!secondaryList || !SecondaryListComponent) {
+    showSiblingArticlesList
+  ) {
+    if (!secondaryList) {
       return null;
     }
     const blogPostTextElements = this.filterBlogPostTextElements(content);
@@ -281,13 +273,9 @@ export default class BlogPost extends React.Component {
     if (!isEnoughParagraphs) {
       return null;
     }
-    const modifier = secondaryListModifier;
-    const secondaryListElement = (
-      <SecondaryListComponent key={`${ modifier }-secondaryList`} content={secondaryList} modifier={modifier} />
-    );
     const alternateListPosition = 4;
     const position = showSiblingArticlesList ? secondaryListPosition + alternateListPosition : secondaryListPosition;
-    return blogPostTextElements.splice(position, 0, secondaryListElement);
+    return blogPostTextElements.splice(position, 0, secondaryList);
   }
 
   addSiblingsList(siblingListProps) {
@@ -411,9 +399,7 @@ export default class BlogPost extends React.Component {
       nextArticleLink,
       printEdition,
       secondaryList,
-      SecondaryListComponent,
       secondaryListPosition,
-      secondaryListModifier,
     } = this.props;
     const siblingsListTitle = this.props.sectionName;
     const elementClassName = showSiblingArticlesList && this.props.classNameModifier ?
@@ -475,15 +461,12 @@ export default class BlogPost extends React.Component {
       printEdition,
     };
     this.addSiblingsList(siblingListProps);
-    const secondaryListProps = {
+    this.addSecondaryList(
       secondaryList,
-      SecondaryListComponent,
       secondaryListPosition,
-      secondaryListModifier,
       content,
-      showSiblingArticlesList,
-    };
-    this.addSecondaryList(secondaryListProps);
+      showSiblingArticlesList
+    );
     return (
       <article
         itemScope
