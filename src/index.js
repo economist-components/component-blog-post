@@ -370,23 +370,6 @@ export default class BlogPost extends React.Component {
     return { shareBarDefault, shareBarPublicateDate, sharebarType };
   }
 
-  addCommentsSection() {
-    const { commentCount, commentStatus } = this.props;
-    let commentSection = null;
-    if (commentStatus !== 'disabled' && !(commentStatus === 'readonly' && commentCount === 0)) {
-      commentSection = (
-        <Comments
-          key="blog-post__comments"
-          firstToCommentLabel={this.props.firstToCommentLabel}
-          commentCount={commentCount}
-          viewCommentsLabel={this.props.viewCommentsLabel}
-          commentsUri={this.props.commentsUri}
-        />
-      );
-    }
-    return commentSection;
-  }
-
   render() {
     const {
       id,
@@ -424,13 +407,27 @@ export default class BlogPost extends React.Component {
     asideableContent.push(
       shareBarDefault
     );
+    const { commentCount, commentStatus } = this.props;
+    let commentSection = null;
+    if (commentStatus !== 'disabled' && !(commentStatus === 'readonly' && commentCount === 0)) {
+      const { firstToCommentLabel, viewCommentsLabel, commentsUri } = this.props;
+      const commentProps = {
+        key: 'blog-post__comments',
+        firstToCommentLabel,
+        commentCount,
+        viewCommentsLabel,
+        commentsUri,
+      };
+      commentSection = <Comments {...commentProps} />;
+      asideableContent.push(<Comments {...commentProps} hideLabel />);
+    }
     const wrappedInnerContent = this.generateWrappedInnerContent(asideableContent);
     content.push(<div className="blog-post__inner" key="inner-content">{wrappedInnerContent}</div>);
     content.push(
       <div className="blog-post__bottom-panel" key="blog-post__bottom-panel">
         <div className="blog-post__bottom-panel-top">
           {shareBarDefault}
-          {this.addCommentsSection()}
+          {commentSection}
         </div>
         <div className="blog-post__bottom-panel-bottom">
           {this.props.reuseButtonMaker({
