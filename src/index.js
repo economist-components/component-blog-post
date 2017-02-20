@@ -89,7 +89,7 @@ export default class BlogPost extends React.Component {
     return {
       itemType: 'http://schema.org/BlogPosting',
       itemProp: 'blogPost',
-      viewCommentsLabel: 'View comments',
+      viewCommentsLabel: 'Comments',
       reuseButtonMaker: () => null,
       dateFormat: (date) => {
         const tenMinutes = 10;
