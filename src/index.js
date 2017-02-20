@@ -67,6 +67,7 @@ export default class BlogPost extends React.Component {
         'readwrite',
         'fbcommentplugin',
       ]).isRequired,
+      firstToCommentLabel: React.PropTypes.string.isRequired,
       viewCommentsLabel: React.PropTypes.string.isRequired,
       commentsUri: React.PropTypes.string.isRequired,
       blogImage: React.PropTypes.object,
@@ -83,12 +84,15 @@ export default class BlogPost extends React.Component {
       shareBarMobileIcons: getIconsPropTypes(),
       reuseButtonMaker: React.PropTypes.func,
       printEdition: React.PropTypes.bool,
+      secondaryList: React.PropTypes.node,
+      secondaryListPosition: React.PropTypes.number,
     };
   }
   static get defaultProps() {
     return {
       itemType: 'http://schema.org/BlogPosting',
       itemProp: 'blogPost',
+      firstToCommentLabel: 'Be the first to comment',
       viewCommentsLabel: 'Comments',
       reuseButtonMaker: () => null,
       dateFormat: (date) => {
@@ -248,6 +252,31 @@ export default class BlogPost extends React.Component {
     }
   }
 
+  addSecondaryList(
+    secondaryList,
+    secondaryListPosition,
+    content,
+    showSiblingArticlesList
+  ) {
+    if (!secondaryList) {
+      return null;
+    }
+    const blogPostTextElements = this.filterBlogPostTextElements(content);
+    /* eslint-disable arrow-body-style */
+    let isEnoughParagraphs = null;
+    if (typeof blogPostTextElements[0] === 'object') {
+      isEnoughParagraphs = blogPostTextElements.find((element) => {
+        /* eslint-enable arrow-body-style */
+        return element.type === 'p';
+      });
+    }
+    if (!isEnoughParagraphs) {
+      return null;
+    }
+    const alternateListPosition = 4;
+    const position = showSiblingArticlesList ? secondaryListPosition + alternateListPosition : secondaryListPosition;
+    return blogPostTextElements.splice(position, 0, secondaryList);
+  }
 
   addSiblingsList(siblingListProps) {
     const {
@@ -261,6 +290,9 @@ export default class BlogPost extends React.Component {
       nextArticleLink,
       printEdition,
     } = siblingListProps;
+    if (!issueSiblingsList || !showSiblingArticlesList) {
+      return;
+    }
     const siblingArticles = showSiblingArticlesList && issueSiblingsList ?
     issueSiblingsList : null;
     const { sideText, siblingListSideTitle, articleFootNote } = this.props;
@@ -308,6 +340,36 @@ export default class BlogPost extends React.Component {
     return wrappedInnerContent;
   }
 
+  addSectionDateAuthor() {
+    let sectionDateAuthor = [];
+    sectionDateAuthor = this.addBlogPostSection(sectionDateAuthor, this.props.section, this.props.sectionUrl);
+    sectionDateAuthor = this.addDateTime(sectionDateAuthor, this.props);
+    sectionDateAuthor = this.addLocationCreated(sectionDateAuthor, this.props.locationCreated);
+    sectionDateAuthor = this.addByLine(sectionDateAuthor, this.props.byline);
+    return sectionDateAuthor;
+  }
+
+  addShareBar() {
+    // Share bar publicationDate formatted
+    let shareBarPublicateDate = new Date(this.props.publicationDate * 1000) // eslint-disable-line
+    shareBarPublicateDate = `${ String(shareBarPublicateDate.getFullYear()) }
+    ${ String(twoDigits(shareBarPublicateDate.getMonth() + 1)) }
+    ${ String(twoDigits(shareBarPublicateDate.getDate())) }`.replace(/\s/g, '');
+    const sharebarType = this.props.type === 'post' ? 'BL' : 'A';
+    const shareBarDefault =
+      (<ShareBar
+        key="sharebar"
+        type={sharebarType}
+        title={this.props.title}
+        flyTitle={this.props.flyTitle}
+        publicationDate={shareBarPublicateDate}
+        contentID={this.props.id}
+        desktopIcons={this.props.shareBarDesktopIcons}
+        mobileIcons={this.props.shareBarMobileIcons}
+       />);
+    return { shareBarDefault, shareBarPublicateDate, sharebarType };
+  }
+
   render() {
     const {
       id,
@@ -319,6 +381,8 @@ export default class BlogPost extends React.Component {
       articleListPosition,
       nextArticleLink,
       printEdition,
+      secondaryList,
+      secondaryListPosition,
     } = this.props;
     const siblingsListTitle = this.props.sectionName;
     const elementClassName = showSiblingArticlesList && this.props.classNameModifier ?
@@ -327,12 +391,8 @@ export default class BlogPost extends React.Component {
     // aside and text content are wrapped together into a component.
     // that makes it easier to move the aside around relatively to its containter
     const asideableContent = [];
-    let sectionDateAuthor = [];
+    const sectionDateAuthor = this.addSectionDateAuthor();
     content = this.addRubric(content, this.props.rubric);
-    sectionDateAuthor = this.addBlogPostSection(sectionDateAuthor, this.props.section, this.props.sectionUrl);
-    sectionDateAuthor = this.addDateTime(sectionDateAuthor, this.props);
-    sectionDateAuthor = this.addLocationCreated(sectionDateAuthor, this.props.locationCreated);
-    sectionDateAuthor = this.addByLine(sectionDateAuthor, this.props.byline);
     if (sectionDateAuthor.length) {
       asideableContent.push(
         <div
@@ -343,41 +403,26 @@ export default class BlogPost extends React.Component {
         </div>
       );
     }
-
-    // Share bar publicationDate formatted
-    let shareBarPublicateDate = new Date(this.props.publicationDate * 1000) // eslint-disable-line
-    shareBarPublicateDate = `${ String(shareBarPublicateDate.getFullYear()) }
-    ${ String(twoDigits(shareBarPublicateDate.getMonth() + 1)) }
-    ${ String(twoDigits(shareBarPublicateDate.getDate())) }`.replace(/\s/g, '');
-    const sharebarType = this.props.type === 'post' ? 'BL' : 'A';
-    const shareBarDefault =
-      (<ShareBar
-        key="sharebar"
-        type={sharebarType}
-        title={title}
-        flyTitle={flyTitle}
-        publicationDate={shareBarPublicateDate}
-        contentID={id}
-        desktopIcons={this.props.shareBarDesktopIcons}
-        mobileIcons={this.props.shareBarMobileIcons}
-       />);
+    const { shareBarDefault, shareBarPublicateDate, sharebarType } = this.addShareBar();
     asideableContent.push(
       shareBarDefault
     );
-    const wrappedInnerContent = this.generateWrappedInnerContent(asideableContent);
-    content.push(<div className="blog-post__inner" key="inner-content">{wrappedInnerContent}</div>);
     const { commentCount, commentStatus } = this.props;
     let commentSection = null;
     if (commentStatus !== 'disabled' && !(commentStatus === 'readonly' && commentCount === 0)) {
-      commentSection = (
-        <Comments
-          key="blog-post__comments"
-          commentCount={commentCount}
-          viewCommentsLabel={this.props.viewCommentsLabel}
-          commentsUri={this.props.commentsUri}
-        />
-      );
+      const { firstToCommentLabel, viewCommentsLabel, commentsUri } = this.props;
+      const commentProps = {
+        key: 'blog-post__comments',
+        firstToCommentLabel,
+        commentCount,
+        viewCommentsLabel,
+        commentsUri,
+      };
+      commentSection = <Comments {...commentProps} />;
+      asideableContent.push(<Comments {...commentProps} hideLabel />);
     }
+    const wrappedInnerContent = this.generateWrappedInnerContent(asideableContent);
+    content.push(<div className="blog-post__inner" key="inner-content">{wrappedInnerContent}</div>);
     content.push(
       <div className="blog-post__bottom-panel" key="blog-post__bottom-panel">
         <div className="blog-post__bottom-panel-top">
@@ -395,7 +440,6 @@ export default class BlogPost extends React.Component {
       </div>
     );
     this.moveBottomMobileAd(content);
-
     const TitleComponent = this.props.TitleComponent;
     const articleHeader = showSiblingArticlesList ? (
       <span className={`blog-post__siblings-list-header ${ elementClassName }`}>
@@ -414,6 +458,12 @@ export default class BlogPost extends React.Component {
       printEdition,
     };
     this.addSiblingsList(siblingListProps);
+    this.addSecondaryList(
+      secondaryList,
+      secondaryListPosition,
+      content,
+      showSiblingArticlesList
+    );
     return (
       <article
         itemScope

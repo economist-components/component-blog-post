@@ -18,7 +18,7 @@ export default (
       text={postText}
       itemType="http://schema.org/BlogPosting"
       itemProp="blogPost"
-      commentCount={10}
+      commentCount={20}
       commentsUri="https://google.com"
       commentStatus="readwrite"
     />

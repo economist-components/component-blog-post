@@ -36,13 +36,19 @@ const requiredProps = {
   commentStatus: 'readwrite',
   elementClassName: 'blog-post__classname',
   sectionName: 'Section name',
+  secondaryListModifier: 'modifier',
   TitleComponent: ({ flyTitle, title }) => (<div className="test-title-component">test: {flyTitle} {title}</div>),
 };
 
 const otherProps = {
   flyTitle: 'Other flyTitle',
   section: 'Other section',
-  text: 'Other text',
+  text: [
+    "paragraph 1 paragraph 1 paragraph 1",
+    "paragraph 2 paragraph 2 paragraph 2",
+    "paragraph 3 paragraph 3 paragraph 3",
+    "paragraph 4 paragraph 4 paragraph 4",
+  ],
   title: 'Other title',
   type: 'blog',
   id: 'test blog',
@@ -61,12 +67,6 @@ const otherProps = {
   sectionName: 'Special report',
   sideText: 'More in this report',
   TitleComponent: ({ flyTitle, title }) => (<div className="test-title-component">test: {flyTitle} {title}</div>),
-  text: [
-    "paragraph 1 paragraph 1 paragraph 1",
-    "paragraph 2 paragraph 2 paragraph 2",
-    "paragraph 3 paragraph 3 paragraph 3",
-    "paragraph 4 paragraph 4 paragraph 4",
-  ],
 }
 
 const mountComponentWithProps = mountComponent(requiredProps);
@@ -138,15 +138,23 @@ describe('BlogPost', () => {
   });
 
   describe('Comments', () => {
-    it('renders the comments', () => {
+    it('renders the comments (#comments > 0)', () => {
       const post = mountComponentWithProps({
         commentCount: 10,
         viewCommentsLabel: 'foo'
       });
-      post.should.have.exactly(1).descendants('.blog-post__comments');
-      post.find('.blog-post__comments').should.have.attr('href', requiredProps.commentsUri);
-      post.find('.blog-post__comments-label')
-      .should.have.text('foo');
+      post.should.have.exactly(2).descendants('.blog-post__comments');
+      const comments = post.find('.blog-post__comments');
+      comments.forEach(node => node.should.have.attr('href', requiredProps.commentsUri));
+      post.find('.blog-post__comments-label').should.have.text('foo');
+    });
+
+    it('renders the comments (#comments = 0)', () => {
+      const post = mountComponentWithProps({ commentCount: 0 });
+      post.should.have.exactly(2).descendants('.blog-post__comments');
+      const comments = post.find('.blog-post__comments');
+      comments.forEach(node => node.should.have.attr('href', requiredProps.commentsUri));
+      post.find('.blog-post__comments-label').should.have.text('Be the first to comment');
     });
 
     it('hides the comments when comments are disabled', () => {
