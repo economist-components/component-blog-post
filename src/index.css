@@ -123,7 +123,8 @@
 .blog-post__text a {
   color: var(--blog-post-color-link-underline, inherit);
   text-decoration: none;
-  border-bottom: 1px solid var(--blog-post-color-link-underline, var(--color-moscow));
+  padding-bottom: 1px;
+  border-bottom: 2px solid var(--blog-post-color-link-underline, var(--color-kosice));
 }
 
 .blog-post__text a:visited,
