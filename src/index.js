@@ -47,6 +47,7 @@ export default class BlogPost extends React.Component {
       id: React.PropTypes.string.isRequired,
       publicationDate: React.PropTypes.string.isRequired,
       TitleComponent: React.PropTypes.func.isRequired,
+      LinkComponent: React.PropTypes.func.isRequired,
       rubric: React.PropTypes.string,
       dateTime: React.PropTypes.instanceOf(Date),
       dateString: React.PropTypes.string,
@@ -199,14 +200,15 @@ export default class BlogPost extends React.Component {
   }
 
   addBlogPostSection(sectionDateAuthor, section, sectionUrl) {
+    const { LinkComponent: Link } = this.props;
     if (section) {
       if (sectionUrl && !/^(\w+:)?\/\//.test(sectionUrl)) {
         sectionUrl = urlJoin('/', sectionUrl);
       }
       const blogPostSection = sectionUrl ? (
-        <a href={sectionUrl} className="blog-post__section-link">
+        <Link href={sectionUrl} className="blog-post__section-link">
           {section}
-        </a>
+        </Link>
       ) : section;
       return sectionDateAuthor.concat(
         <BlogPostSection key="blog-post__section" section={blogPostSection} />
