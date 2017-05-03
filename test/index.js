@@ -37,6 +37,7 @@ const requiredProps = {
   sectionName: 'Section name',
   secondaryListModifier: 'modifier',
   TitleComponent: ({ flyTitle, title }) => (<div className="test-title-component">test: {flyTitle} {title}</div>),
+  LinkComponent: ({ href, className }) => (<a className={className} href={href}>{requiredProps.section}</a>)
 };
 
 const siblingListProps = {
