@@ -1,3 +1,4 @@
+/* eslint-disable camelcase, id-match  */
 import Author from './parts/author';
 import BlogPostImage from './parts/blog-post-image';
 import BlogPostSection from './parts/blog-post-section';
@@ -87,6 +88,16 @@ export default class BlogPost extends React.Component {
       printEdition: React.PropTypes.bool,
       secondaryList: React.PropTypes.node,
       secondaryListPosition: React.PropTypes.number,
+      i13nFunction: React.PropTypes.shape({
+        generateI13nNode: React.PropTypes.func,
+        createI13nModel: React.PropTypes.func,
+        createModule: React.PropTypes.func,
+        createModuleItem: React.PropTypes.func,
+      }),
+      i13n: React.PropTypes.shape({
+        getI13nNode: React.PropTypes.func,
+        executeEvent: React.PropTypes.func,
+      }),
     };
   }
   static get defaultProps() {
@@ -131,6 +142,19 @@ export default class BlogPost extends React.Component {
           `${ date.getHours() }:${ minutes }` ].join(' ');
       },
     };
+  }
+
+  constructor(props) {
+    super(props);
+    this.generateShareBar = this.generateShareBar.bind(this, props.i13nFunction);
+  }
+
+  generateShareBar(i13nFunction, config) {
+    return this.addShareBar(
+      typeof i13nFunction === 'undefined' ? null :
+        i13nFunction.createI13nModel(i13nFunction.createModule(config), 'module'),
+      config.id
+    );
   }
 
   addDateTime(sectionDateAuthor, props) {
@@ -359,15 +383,20 @@ export default class BlogPost extends React.Component {
     return sectionDateAuthor;
   }
 
-  addShareBar() {
+  addShareBar(i13nModel) {
     // Share bar publicationDate formatted
     let shareBarPublicateDate = new Date(this.props.publicationDate * 1000) // eslint-disable-line
     shareBarPublicateDate = `${ String(shareBarPublicateDate.getFullYear()) }
     ${ String(twoDigits(shareBarPublicateDate.getMonth() + 1)) }
     ${ String(twoDigits(shareBarPublicateDate.getDate())) }`.replace(/\s/g, '');
     const sharebarType = this.props.type === 'post' ? 'BL' : 'A';
+    const {
+      i13n,
+      i13nFunction,
+    } = this.props;
+    const I13nShareBar = i13nModel === null ? ShareBar : i13nFunction.generateI13nNode(ShareBar, false);
     const shareBarDefault =
-      (<ShareBar
+      (<I13nShareBar
         key="sharebar"
         type={sharebarType}
         title={this.props.title}
@@ -376,6 +405,9 @@ export default class BlogPost extends React.Component {
         contentID={this.props.id}
         desktopIcons={this.props.shareBarDesktopIcons}
         mobileIcons={this.props.shareBarMobileIcons}
+        i13n={i13n}
+        i13nFunction={i13nFunction}
+        i13nModel={i13nModel}
        />);
     return { shareBarDefault, shareBarPublicateDate, sharebarType };
   }
@@ -414,7 +446,15 @@ export default class BlogPost extends React.Component {
         </div>
       );
     }
-    const { shareBarDefault, shareBarPublicateDate, sharebarType } = this.addShareBar();
+    const shareBarTop = {
+      id: 'blog-post_share-bar-top',
+      type: 'share',
+      sub_type: 'social',
+      placement: 'body',
+      name: 'share-bar',
+      items: [],
+    };
+    const { shareBarDefault, shareBarPublicateDate, sharebarType } = this.generateShareBar(shareBarTop);
     asideableContent.push(
       shareBarDefault
     );
@@ -433,11 +473,20 @@ export default class BlogPost extends React.Component {
       asideableContent.push(<Comments {...commentProps} hideLabel />);
     }
     const wrappedInnerContent = this.generateWrappedInnerContent(asideableContent);
+    const shareBarBottomConfig = {
+      id: 'blog-post_share-bar-bottom',
+      type: 'share',
+      sub_type: 'social',
+      placement: 'body',
+      name: 'share-bar',
+      items: [],
+    };
+    const { shareBarDefault: shareBarBottom } = this.generateShareBar(shareBarBottomConfig);
     content.push(<div className="blog-post__inner" key="inner-content">{wrappedInnerContent}</div>);
     content.push(
       <div className="blog-post__bottom-panel" key="blog-post__bottom-panel">
         <div className="blog-post__bottom-panel-top">
-          {shareBarDefault}
+          {shareBarBottom}
           {commentSection}
         </div>
         <div className="blog-post__bottom-panel-bottom">
