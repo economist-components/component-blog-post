@@ -69,7 +69,6 @@ export default class BlogPost extends React.Component {
         'readwrite',
         'fbcommentplugin',
       ]).isRequired,
-      firstToCommentLabel: React.PropTypes.string.isRequired,
       viewCommentsLabel: React.PropTypes.string.isRequired,
       commentsUri: React.PropTypes.string.isRequired,
       blogImage: React.PropTypes.object,
@@ -104,8 +103,7 @@ export default class BlogPost extends React.Component {
     return {
       itemType: 'http://schema.org/BlogPosting',
       itemProp: 'blogPost',
-      firstToCommentLabel: 'Be the first to comment',
-      viewCommentsLabel: 'View comments',
+      viewCommentsLabel: 'Comments',
       reuseButtonMaker: () => null,
       dateFormat: (date) => {
         const tenMinutes = 10;
@@ -461,10 +459,9 @@ export default class BlogPost extends React.Component {
     const { commentCount, commentStatus } = this.props;
     let commentSection = null;
     if (commentStatus !== 'disabled' && !(commentStatus === 'readonly' && commentCount === 0)) {
-      const { firstToCommentLabel, viewCommentsLabel, commentsUri } = this.props;
+      const { viewCommentsLabel, commentsUri } = this.props;
       const commentProps = {
         key: 'blog-post__comments',
-        firstToCommentLabel,
         commentCount,
         viewCommentsLabel,
         commentsUri,
